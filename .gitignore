@@ -1,1 +1,6 @@
+# Required for local development
 .venv
+.env
+
+# Cache
+__pycache__/
