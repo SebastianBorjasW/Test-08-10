@@ -1,68 +1,76 @@
-# Test-08-10
+# Description
+This project is a technical test that involves developing a deep learning model using transfer learning to classify at least three different labels of images. This model was trained with the pre-trained MobileNetV2 model and the COVID-19 Image Dataset from Kaggle, which contains 317 chest X-ray images. The labels are three: COVID, Normal, and Viral Pneumonia.  
 
-### Descripción:
+The model was trained and tested with an accuracy of 0.93, but this does not mean it is ready for real-world scenarios. There are several improvements that can be made, such as better data augmentation, model selection, and hyperparameter tuning. However, it is a good starting point because it is a simple model created with a very small dataset.  
 
-Se le solicita desarrollar un programa en Python que clasifique imágenes en al menos tres categorías diferentes utilizando técnicas de Transfer Learning con modelos pre-entrenados de Deep Learning. El objetivo es construir un modelo que pueda reconocer y clasificar nuevas imágenes con una precisión razonable.
+This dataset was chosen to avoid the typical datasets of flowers, animals, or fruits and to create something different, such as a hospital dashboard in this case.  
 
-### Requisitos:
+# Technologies
+This project utilizes several technologies to build a robust application, including:  
+- **TensorFlow**: An open-source library for machine learning and deep learning, used in this project for image classification tasks.  
+- **FastAPI**: A modern, fast web framework for building APIs with Python 3.7+ based on standard Python type hints.  
+- **SQLAlchemy**: A SQL toolkit and Object-Relational Mapping (ORM) system for Python, used to interact with the MySQL database.
+- **Flutter**: An open-source UI software development toolkit for building natively compiled applications for mobile, web, and desktop from a single codebase.  
 
-#### Selección del Conjunto de Datos:
+# Setup Project
+## Requirements
+* Python3.10  
+* python3-dev  
+* python3-venv  
+* mysql-server  
+* libmysqlclient-dev  
 
-Puede utilizar conjuntos de datos públicos como:
-Kaggle Datasets: Animals-10 Dataset (contiene imágenes de 10 tipos de animales).
-Conjunto de Datos Personalizado: Puede recopilar imágenes de tres categorías a su elección (por ejemplo, gatos, perros y pájaros).
-Asegúrese de tener un conjunto equilibrado de imágenes para cada categoría.
+## Steps  
+### Run the server  
+1. Clone the repository:  
+``` bash
+git clone https://github.com/SebastianBorjasW/Test-08-10.git
+```
 
-#### Preprocesamiento de Datos:
+2. Change into the directory:
+```
+cd Test-08-10
+```
 
-Organizar las imágenes en directorios separados por clase para facilitar la carga y etiquetado.
-Aplicar técnicas de aumento de datos (data augmentation) como rotación, volteo y escalado para aumentar la variedad del conjunto de datos.
-Redimensionar las imágenes a un tamaño adecuado para el modelo pre-entrenado seleccionado (por ejemplo, 224x224 píxeles).
-Implementación del Modelo:
+3. Create a Python virtual environment:
+``` bash
+python3 -m venv .venv
+```
 
-#### Utilizar un modelo pre-entrenado disponible en Keras o PyTorch:
+4. Activate the virtual environment:
+``` bash
+source .venv/bin/activate
+```
 
-Congelar las capas del modelo pre-entrenado y agregar capas densas adicionales para adaptarlo a su problema de clasificación.
-Compilar el modelo con una función de pérdida adecuada (por ejemplo, categorical_crossentropy) y un optimizador como Adam.
-Entrenamiento y Validación:
+5. Install the packages:  
+``` bash
+pip install -r requirements.txt
+```
 
-Dividir el conjunto de datos en conjuntos de entrenamiento y validación (por ejemplo, 80% entrenamiento y 20% validación).
-Entrenar el modelo y monitorear la precisión y la pérdida en ambos conjuntos.
-Ajustar hiperparámetros como la tasa de aprendizaje y el número de épocas para mejorar el rendimiento.
+6. Create a database  
+``` bash
+sudo service mysql start
+mysql -u User -p
+CREATE DATABASE pruebatecnica;
+exit
+```
 
-#### Evaluación del Modelo:
+7. Create .env file with the database information
+``` bash
+echo "DATABASE_URL=mysql+pymysql://User:Password@localhost:3306/pruebatecnica" > .env
+```
 
-Evaluar el modelo utilizando métricas como:
-Precisión (Accuracy)
-Generar gráficos que muestren:
-La curva de precisión y pérdida durante el entrenamiento.
-La matriz de confusión para visualizar el rendimiento por clase.
+8. Change to super user
+``` bash
+sudo su
+```
 
-#### Prueba con Nuevas Imágenes:
+9. Change into /backend
+``` bash
+cd backend
+```
 
-Probar el modelo con imágenes nuevas que no formen parte del conjunto de datos utilizado.
-Mostrar las predicciones y la probabilidad asociada a cada clase.
-
-### Entregable
-
-Grabar un video (máximo 5 minutos) mostrando:
-La explicación del enfoque y las decisiones tomadas.
-El código fuente y su estructura.
-La ejecución del programa y demostración de su funcionamiento con diferentes imágenes.
-Los resultados obtenidos y conclusiones.
-
-### Entrega:
-
-Código fuente bien organizado y documentado.
-Archivo README con instrucciones para ejecutar el programa y explicaciones adicionales si es necesario.
-El video de demostración en un formato común (por ejemplo, MP4, AVI).
-
-Asegúrese de que el código sea reproducible; incluya instrucciones claras sobre cómo instalar dependencias y ejecutar el programa.
-Si utiliza notebooks de Jupyter, proporcione el archivo .ipynb y exporte una versión en HTML o PDF.
-
-#### Consejos:
-
-Comience por explorar y comprender el conjunto de datos elegido.
-Verifique que las imágenes estén correctamente etiquetadas y organizadas.
-Realice pruebas con una pequeña parte del conjunto de datos para agilizar el proceso de desarrollo.
-Documente las decisiones tomadas y los desafíos encontrados durante el desarrollo.
+10. Run the server
+```
+fastapi run app.py
+```
