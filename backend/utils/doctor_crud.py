@@ -47,3 +47,10 @@ def delete_doctor(db: Session, doctor_id: int):
     db.delete(doctor)
     db.commit()
     return True
+
+def get_doctor(db: Session, doctor_id: int):
+    """Obtiene un doctor por su id."""
+    doctor = db.query(models.Doctor).filter(models.Doctor.id == doctor_id).first()
+    if doctor is None:
+        raise HTTPException(status_code=404, detail="Doctor no encontrado.")
+    return doctor
