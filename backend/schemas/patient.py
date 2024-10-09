@@ -8,12 +8,11 @@ class PatientBase(BaseModel):
     last_name: str
     sex: Literal['M', 'F']
     dob: date
-    xray_image_path: str
     doctor_id: int
     diagnosis: str
 
 class PatientCreate(PatientBase):
-    pass
+    xray_image_path: str
 
 class Patient(PatientBase):
     id: int
