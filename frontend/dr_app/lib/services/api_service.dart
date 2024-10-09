@@ -15,7 +15,7 @@ class ApiService {
       body: jsonEncode(doctorCreate.toJson()),
     );
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       return Doctor.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Error al crear la cuenta');
