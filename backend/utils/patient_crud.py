@@ -38,3 +38,7 @@ def register_patient(db: Session, patient_create: PatientCreate, file: File):
     db.refresh(patient)
     
     return diagnosis_prediction
+
+def get_patients(db: Session, skip: int = 0, limit: int = 100):
+    """Obtiene todos los pacientes en la db."""
+    return db.query(models.Patient).offset(skip).limit(limit).all()
