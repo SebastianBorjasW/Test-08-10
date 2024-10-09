@@ -34,7 +34,7 @@ def create_doctor(db: Session, doctor_create: schemas.doctor.DoctorCreate):
     db.add(doctor)
     db.commit()
     db.refresh(doctor) # Actualiza la tabla de doctores
-    return True
+    return doctor
     
 # Obtiene un doctor por su email
 def get_doctor_by_email(db: Session, email: str):
