@@ -2,6 +2,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from schemas.doctor import Doctor, DoctorCreate
+from schemas.login import Login
 from utils import auth_doc
 from config.config import Config
 
@@ -15,6 +16,6 @@ def signup(doctor_create: DoctorCreate, db: Session = Depends(Config.get_db)):
 
 # Iniciar sesión
 @auth.post('/signin', response_model=Doctor)
-def signin(email: str, password: str, db: Session = Depends(Config.get_db)):
+def signin(login_request: Login, db: Session = Depends(Config.get_db)):
     """Inicia sesión."""
-    return auth_doc.signin(db, email, password)
+    return auth_doc.signin(db, str(login_request.email), str(login_request.password))
