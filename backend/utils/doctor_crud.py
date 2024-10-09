@@ -3,6 +3,11 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException
 import models
 import schemas
+import bcrypt
+
+def hash_password(password: str) -> str:
+    """Hashea la contraseña."""
+    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
 # Obtener doctores
 def get_doctors(db: Session, skip: int = 0, limit: int = 100):
@@ -12,11 +17,14 @@ def get_doctors(db: Session, skip: int = 0, limit: int = 100):
 # Crea un doctor
 def create_doctor(db: Session, doctor_create: schemas.doctor.DoctorCreate):
     """Crea un doctor en la db."""
+
+    hashed_password = hash_password(doctor_create.password)
+
     doctor = models.Doctor(
         first_name=doctor_create.first_name,
         last_name=doctor_create.last_name,
         email=doctor_create.email,
-        password=doctor_create.password
+        password=hashed_password
     )
 
     if get_doctor_by_email(db, doctor_create.email):
