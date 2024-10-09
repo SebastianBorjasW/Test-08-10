@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, File, UploadFile, Form
 from sqlalchemy.orm import Session
 from utils import patient_crud
 from config.config import Config
-from schemas.patient import PatientCreate
+from schemas.patient import Patient, PatientCreate
 from datetime import date
 
 patient = APIRouter()
@@ -30,3 +30,7 @@ def register_patient(
     )
     
     return patient_crud.register_patient(db, patient_create, file)
+
+@patient.get('/', response_model=list[Patient])
+def get_patients(skip: int = 0, limit: int = 100, db: Session = Depends(Config.get_db)):
+    return patient_crud.get_patients(db, skip, limit)
