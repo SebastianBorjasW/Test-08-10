@@ -3,8 +3,7 @@ from fastapi import APIRouter, Depends, File, UploadFile, Form
 from sqlalchemy.orm import Session
 from utils import patient_crud
 from config.config import Config
-from schemas.patient import Patient, PatientCreate
-import os
+from schemas.patient import PatientCreate
 from datetime import date
 
 patient = APIRouter()
@@ -30,5 +29,4 @@ def register_patient(
         diagnosis=diagnosis
     )
     
-    # Pasar los datos a la función del CRUD
     return patient_crud.register_patient(db, patient_create, file)
