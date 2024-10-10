@@ -1,6 +1,8 @@
 // author: Renato García Morán
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
 import '../models/patient_model.dart';
 import '../services/api_service.dart';
 
@@ -42,6 +44,35 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
     }
   }
 
+  Future<void> _downloadPatientPdf() async {
+    try {
+      final pdfBytes = await _apiService.getPatientPdf(widget.patient.id);
+      if (pdfBytes != null) {
+        final fileName =
+            '${widget.patient.first_name}_${widget.patient.last_name}.pdf';
+        String? selectedDirectory =
+            await FilePicker.platform.getDirectoryPath();
+
+        if (selectedDirectory != null) {
+          final filePath = '$selectedDirectory/$fileName';
+          final file = File(filePath);
+          await file.writeAsBytes(pdfBytes);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('PDF guardado en $filePath')),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('La descarga fue cancelada')),
+          );
+        }
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al descargar el PDF')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +89,7 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Row(
           children: [
-            // datos del paciente centrados
+            // Datos del paciente centrados
             Expanded(
               flex: 1,
               child: Center(
@@ -66,9 +97,9 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       'Datos del paciente',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.white,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -124,12 +155,18 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
                         }
                       },
                     ),
+                    const SizedBox(height: 24),
+                    // Botón para descargar el PDF
+                    ElevatedButton(
+                      onPressed: _downloadPatientPdf,
+                      child: const Text('Descargar PDF'),
+                    ),
                   ],
                 ),
               ),
             ),
             const SizedBox(width: 20),
-            // foto del paciente
+            // Foto del paciente
             Expanded(
               flex: 1,
               child: FutureBuilder<Uint8List?>(
