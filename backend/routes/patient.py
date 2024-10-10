@@ -34,3 +34,8 @@ def register_patient(
 @patient.get('/', response_model=list[Patient])
 def get_patients(skip: int = 0, limit: int = 100, db: Session = Depends(Config.get_db)):
     return patient_crud.get_patients(db, skip, limit)
+
+@patient.get('/{patient_id}/photo')
+def get_patient_photo(patient_id: int, db: Session = Depends(Config.get_db)):
+    """Devuelve la foto del paciente dado su ID."""
+    return patient_crud.get_patient_photo_by_id(patient_id, db)

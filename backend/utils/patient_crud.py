@@ -1,6 +1,7 @@
 # author: Renato García Morán
 from sqlalchemy.orm import Session
-from fastapi import File
+from fastapi import File, HTTPException
+from fastapi.responses import FileResponse
 import models
 from schemas.patient import PatientCreate
 from predictions.predict_diagnosis import predict_diagnosis
@@ -42,3 +43,18 @@ def register_patient(db: Session, patient_create: PatientCreate, file: File):
 def get_patients(db: Session, skip: int = 0, limit: int = 100):
     """Obtiene todos los pacientes en la db."""
     return db.query(models.Patient).offset(skip).limit(limit).all()
+
+def get_patient_photo_by_id(patient_id: int, db: Session):
+    """Obtiene la foto del paciente dado su ID."""
+    # Buscar el paciente en la base de datos
+    patient = db.query(models.Patient).filter(models.Patient.id == patient_id).first()
+    
+    if not patient:
+        raise HTTPException(status_code=404, detail="Paciente no encontrado")
+    
+    # Verificar si existe la ruta de la imagen
+    if not os.path.exists(patient.xray_image_path):
+        raise HTTPException(status_code=404, detail="Imagen no encontrada")
+    
+    # Devolver la imagen como respuesta de archivo
+    return FileResponse(patient.xray_image_path, media_type="image/jpeg", filename=os.path.basename(patient.xray_image_path))
