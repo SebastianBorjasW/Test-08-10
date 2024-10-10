@@ -6,6 +6,13 @@ import models
 from schemas.patient import PatientCreate
 from predictions.predict_diagnosis import predict_diagnosis
 import os
+import io
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+
+def get_patient_by_id(db: Session, patient_id: int) -> models.Patient:
+    """Obtén un paciente por su ID."""
+    return db.query(models.Patient).filter(models.Patient.id == patient_id).first()
 
 def register_patient(db: Session, patient_create: PatientCreate, file: File):
     """Registra un paciente en la db."""
@@ -58,3 +65,50 @@ def get_patient_photo_by_id(patient_id: int, db: Session):
     
     # Devolver la imagen como respuesta de archivo
     return FileResponse(patient.xray_image_path, media_type="image/jpeg", filename=os.path.basename(patient.xray_image_path))
+
+def generate_patient_pdf(db: Session, patient_id: int) -> io.BytesIO:
+    """Genera un archivo PDF con los datos del paciente y su imagen."""
+    # Obtén los datos del paciente
+    patient_data = get_patient_by_id(db, patient_id)
+    if not patient_data:
+        raise ValueError("Paciente no encontrado")
+
+    # Obtén la ruta de la imagen del paciente
+    image_path = patient_data.xray_image_path
+
+    # Crear el buffer para el PDF
+    buffer = io.BytesIO()
+    pdf = canvas.Canvas(buffer, pagesize=letter)
+    _, height = letter
+
+    # Texto con datos del paciente
+    line_height = 20
+    y_position = height - 100
+    pdf.drawString(100, y_position, f"First Name: {patient_data.first_name}")
+    y_position -= line_height
+    pdf.drawString(100, y_position, f"Last Name: {patient_data.last_name}")
+    y_position -= line_height
+    pdf.drawString(100, y_position, f"Sex: {patient_data.sex}")
+    y_position -= line_height
+    pdf.drawString(100, y_position, f"Date of Birth: {patient_data.dob}")
+    y_position -= line_height
+    pdf.drawString(100, y_position, f"Doctor ID: {patient_data.doctor_id}")
+    y_position -= line_height
+    pdf.drawString(100, y_position, f"Diagnosis: {patient_data.diagnosis}")
+
+    y_position -= 50  # dar más espacio antes de la imagen
+
+    # Agregar la imagen si existe
+    if image_path and os.path.exists(image_path):
+        try:
+            # Ajustar la posición de la imagen para que no se superponga con el texto
+            pdf.drawImage(image_path, 100, y_position - 400, width=400, height=400)
+        except Exception as e:
+            pdf.drawString(100, y_position - line_height, "Error al cargar la imagen")
+
+    # Finalizar el PDF
+    pdf.showPage()
+    pdf.save()
+    buffer.seek(0)
+
+    return buffer
