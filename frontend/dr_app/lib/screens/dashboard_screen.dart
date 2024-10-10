@@ -1,3 +1,4 @@
+// author: Renato García Morán
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
 import 'add_patient_screen.dart';
@@ -17,6 +18,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   List<Patient> patients = [];
   bool isLoading = true;
   Map<int, String> doctorNames = {}; // almacenar los nombres de los doctores
+  String selectedFilter = 'Todos'; // filtro inicial de diagnósticos
 
   @override
   void initState() {
@@ -60,6 +62,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ));
         }
       }
+    }
+  }
+
+  List<Patient> getFilteredPatients() {
+    if (selectedFilter == 'Todos') {
+      return patients;
+    } else {
+      return patients
+          .where((patient) => patient.diagnosis == selectedFilter)
+          .toList();
     }
   }
 
@@ -116,91 +128,137 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         body: isLoading
             ? const Center(child: CircularProgressIndicator())
-            : SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: SizedBox(
-                  width: double.infinity,
-                  child: DataTable(
-                    columns: const [
-                      DataColumn(
-                          label: Expanded(
-                              child: Center(
-                                  child: Text('Nombre',
-                                      style: TextStyle(color: Colors.white))))),
-                      DataColumn(
-                          label: Expanded(
-                              child: Center(
-                                  child: Text('Apellido',
-                                      style: TextStyle(color: Colors.white))))),
-                      DataColumn(
-                          label: Expanded(
-                              child: Center(
-                                  child: Text('Sexo',
-                                      style: TextStyle(color: Colors.white))))),
-                      DataColumn(
-                          label: Expanded(
-                              child: Center(
-                                  child: Text('Fecha Nac.',
-                                      style: TextStyle(color: Colors.white))))),
-                      DataColumn(
-                          label: Expanded(
-                              child: Center(
-                                  child: Text('ID Doctor',
-                                      style: TextStyle(color: Colors.white))))),
-                      DataColumn(
-                          label: Expanded(
-                              child: Center(
-                                  child: Text('Diagnóstico',
-                                      style: TextStyle(color: Colors.white))))),
-                    ],
-                    rows: patients.map((patient) {
-                      final doctorName =
-                          doctorNames[patient.doctor_id] ?? 'Desconocido';
-                      return DataRow(
-                        cells: [
-                          DataCell(Center(
-                              child: Text(patient.first_name,
-                                  style:
-                                      const TextStyle(color: Colors.white)))),
-                          DataCell(Center(
-                              child: Text(patient.last_name,
-                                  style:
-                                      const TextStyle(color: Colors.white)))),
-                          DataCell(Center(
-                              child: Text(patient.sex,
-                                  style:
-                                      const TextStyle(color: Colors.white)))),
-                          DataCell(Center(
-                              child: Text(
-                                  patient.dob
-                                      .toIso8601String()
-                                      .substring(0, 10),
-                                  style:
-                                      const TextStyle(color: Colors.white)))),
-                          DataCell(Center(
-                              child: Text(doctorName,
-                                  style:
-                                      const TextStyle(color: Colors.white)))),
-                          DataCell(Center(
-                              child: Text(patient.diagnosis,
-                                  style:
-                                      const TextStyle(color: Colors.white)))),
-                        ],
-                        onSelectChanged: (selected) {
-                          if (selected ?? false) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    PatientDetailScreen(patient: patient),
-                              ),
+            : Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        const Text(
+                          'Filtrar pacientes',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                        const SizedBox(width: 10),
+                        DropdownButton<String>(
+                          value: selectedFilter,
+                          items: <String>[
+                            'Todos',
+                            'Covid',
+                            'Viral Pneumonia',
+                            'Normal'
+                          ].map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value,
+                                  style: const TextStyle(color: Colors.white)),
                             );
-                          }
-                        },
-                      );
-                    }).toList(),
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedFilter = newValue!;
+                            });
+                          },
+                          dropdownColor: Colors.grey[800],
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: DataTable(
+                          columns: const [
+                            DataColumn(
+                                label: Expanded(
+                                    child: Center(
+                                        child: Text('Nombre',
+                                            style: TextStyle(
+                                                color: Colors.white))))),
+                            DataColumn(
+                                label: Expanded(
+                                    child: Center(
+                                        child: Text('Apellido',
+                                            style: TextStyle(
+                                                color: Colors.white))))),
+                            DataColumn(
+                                label: Expanded(
+                                    child: Center(
+                                        child: Text('Sexo',
+                                            style: TextStyle(
+                                                color: Colors.white))))),
+                            DataColumn(
+                                label: Expanded(
+                                    child: Center(
+                                        child: Text('Fecha Nac.',
+                                            style: TextStyle(
+                                                color: Colors.white))))),
+                            DataColumn(
+                                label: Expanded(
+                                    child: Center(
+                                        child: Text('Doctor',
+                                            style: TextStyle(
+                                                color: Colors.white))))),
+                            DataColumn(
+                                label: Expanded(
+                                    child: Center(
+                                        child: Text('Diagnóstico',
+                                            style: TextStyle(
+                                                color: Colors.white))))),
+                          ],
+                          rows: getFilteredPatients().map((patient) {
+                            final doctorName =
+                                doctorNames[patient.doctor_id] ?? 'Desconocido';
+                            return DataRow(
+                              cells: [
+                                DataCell(Center(
+                                    child: Text(patient.first_name,
+                                        style: const TextStyle(
+                                            color: Colors.white)))),
+                                DataCell(Center(
+                                    child: Text(patient.last_name,
+                                        style: const TextStyle(
+                                            color: Colors.white)))),
+                                DataCell(Center(
+                                    child: Text(patient.sex,
+                                        style: const TextStyle(
+                                            color: Colors.white)))),
+                                DataCell(Center(
+                                    child: Text(
+                                        patient.dob
+                                            .toIso8601String()
+                                            .substring(0, 10),
+                                        style: const TextStyle(
+                                            color: Colors.white)))),
+                                DataCell(Center(
+                                    child: Text(doctorName,
+                                        style: const TextStyle(
+                                            color: Colors.white)))),
+                                DataCell(Center(
+                                    child: Text(patient.diagnosis,
+                                        style: const TextStyle(
+                                            color: Colors.white)))),
+                              ],
+                              onSelectChanged: (selected) {
+                                if (selected ?? false) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          PatientDetailScreen(patient: patient),
+                                    ),
+                                  );
+                                }
+                              },
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ));
   }
 }
