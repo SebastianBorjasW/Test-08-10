@@ -5,23 +5,65 @@ part 'patient_model.g.dart';
 
 @JsonSerializable()
 class PatientBase {
-    final String first_name;
-    final String last_name;
-    final String sex;
-    final String dob;
-    final String doctor_id;
-    final String diagnosis;
+  final String first_name;
+  final String last_name;
+  final String sex;
+  final DateTime dob;
+  final int doctor_id;
+  final String diagnosis;
+
+  PatientBase({
+    required this.first_name,
+    required this.last_name,
+    required this.sex,
+    required this.dob,
+    required this.doctor_id,
+    required this.diagnosis,
+  });
+
+  factory PatientBase.fromJson(Map<String, dynamic> json) =>
+      _$PatientBaseFromJson(json);
+  Map<String, dynamic> toJson() => _$PatientBaseToJson(this);
 }
 
 @JsonSerializable()
 class PatientCreate extends PatientBase {
-    final String xray_image_path;
+  final String xray_image_path;
 
-    PatientCreate({required String first_name, required String last_name, required
+  PatientCreate({
+    required super.first_name,
+    required super.last_name,
+    required super.sex,
+    required super.dob,
+    required super.doctor_id,
+    required super.diagnosis,
+    required this.xray_image_path,
+  });
+
+  factory PatientCreate.fromJson(Map<String, dynamic> json) =>
+      _$PatientCreateFromJson(json);
+  @override
+  Map<String, dynamic> toJson() => _$PatientCreateToJson(this);
+}
 
 @JsonSerializable()
 class Patient extends PatientBase {
-    final int id;
-    final String registered_at;
+  final int id;
+  final DateTime registered_at;
 
-    Patient({required String first_name, required String last_name, required
+  Patient({
+    required super.first_name,
+    required super.last_name,
+    required super.sex,
+    required super.dob,
+    required super.doctor_id,
+    required super.diagnosis,
+    required this.id,
+    required this.registered_at,
+  });
+
+  factory Patient.fromJson(Map<String, dynamic> json) =>
+      _$PatientFromJson(json);
+  @override
+  Map<String, dynamic> toJson() => _$PatientToJson(this);
+}
