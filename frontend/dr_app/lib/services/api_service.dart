@@ -112,4 +112,15 @@ class ApiService {
       throw Exception('Error al obtener la foto del paciente');
     }
   }
+
+  Future<Uint8List?> getPatientPdf(int patientId) async {
+    final response =
+        await http.get(Uri.parse('$baseUrl/patients/$patientId/pdf'));
+
+    if (response.statusCode == 200) {
+      return response.bodyBytes;
+    } else {
+      throw Exception('Error al descargar el PDF del paciente');
+    }
+  }
 }
