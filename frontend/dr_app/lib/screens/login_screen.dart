@@ -1,6 +1,5 @@
 // author: Renato García Morán
 import 'package:flutter/material.dart';
-import '../models/doctor_model.dart';
 import '../services/api_service.dart';
 import '../screens/dashboard_screen.dart';
 import '../screens/signup_screen.dart';
