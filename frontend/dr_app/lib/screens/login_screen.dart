@@ -6,6 +6,8 @@ import '../screens/dashboard_screen.dart';
 import '../screens/signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -29,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
         });
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => DashboardScreen()),
+          MaterialPageRoute(builder: (context) => const DashboardScreen()),
         );
       } else {
         setState(() {
@@ -56,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
+              const Text(
                 'Prueba Técnica',
                 style: TextStyle(
                   color: Colors.white,
@@ -64,15 +66,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 8),
-              Text(
+              const SizedBox(height: 8),
+              const Text(
                 'Renato Garcia Moran',
                 style: TextStyle(
                   color: Colors.white70,
                   fontSize: 16,
                 ),
               ),
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
               SizedBox(
                 width: 300,
                 child: TextField(
@@ -81,14 +83,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     hintText: 'Email',
                     fillColor: Colors.white,
                     filled: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 12.0, horizontal: 16.0),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               SizedBox(
                 width: 300,
                 child: TextField(
@@ -97,7 +100,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     hintText: 'Password',
                     fillColor: Colors.white,
                     filled: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 12.0, horizontal: 16.0),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
@@ -105,9 +109,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   obscureText: true,
                 ),
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               if (_loginFailed)
-                Text(
+                const Text(
                   'Inicio de sesión fallido',
                   style: TextStyle(
                     color: Colors.redAccent,
@@ -121,18 +125,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: _signin,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blueAccent,
-                    padding: EdgeInsets.symmetric(vertical: 14.0),
+                    padding: const EdgeInsets.symmetric(vertical: 14.0),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Iniciar Sesión',
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               SizedBox(
                 width: 120,
                 child: TextButton(
@@ -142,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       MaterialPageRoute(builder: (context) => SignupScreen()),
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     'Crear cuenta',
                     style: TextStyle(
                       color: Colors.blueAccent,

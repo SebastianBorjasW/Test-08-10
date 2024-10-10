@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import '../models/doctor_model.dart';
 
 class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
+
   @override
   _SignupScreenState createState() => _SignupScreenState();
 }
@@ -38,7 +40,9 @@ class _SignupScreenState extends State<SignupScreen> {
 
         if (doctor != null) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Cuenta creada exitosamente para ${doctor.email}')),
+            SnackBar(
+                content:
+                    Text('Cuenta creada exitosamente para ${doctor.email}')),
           );
           Navigator.pop(context);
         }
@@ -75,9 +79,10 @@ class _SignupScreenState extends State<SignupScreen> {
     return Scaffold(
       backgroundColor: Colors.grey[850],
       appBar: AppBar(
-        title: Text('Crear cuenta', style: TextStyle(color: Colors.white)),
+        title:
+            const Text('Crear cuenta', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.grey[900],
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -93,12 +98,13 @@ class _SignupScreenState extends State<SignupScreen> {
                     hintText: 'Nombre',
                     fillColor: Colors.white,
                     filled: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 12.0, horizontal: 16.0),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
-                  style: TextStyle(color: Colors.black),
+                  style: const TextStyle(color: Colors.black),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Por favor ingrese su nombre';
@@ -107,7 +113,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   },
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               SizedBox(
                 width: 300,
                 child: TextFormField(
@@ -116,12 +122,13 @@ class _SignupScreenState extends State<SignupScreen> {
                     hintText: 'Apellido',
                     fillColor: Colors.white,
                     filled: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 12.0, horizontal: 16.0),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
-                  style: TextStyle(color: Colors.black),
+                  style: const TextStyle(color: Colors.black),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Por favor ingrese su apellido';
@@ -130,7 +137,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   },
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               SizedBox(
                 width: 300,
                 child: TextFormField(
@@ -139,12 +146,13 @@ class _SignupScreenState extends State<SignupScreen> {
                     hintText: 'Correo electrónico',
                     fillColor: Colors.white,
                     filled: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 12.0, horizontal: 16.0),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
-                  style: TextStyle(color: Colors.black),
+                  style: const TextStyle(color: Colors.black),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -157,7 +165,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   },
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               SizedBox(
                 width: 300,
                 child: TextFormField(
@@ -166,12 +174,13 @@ class _SignupScreenState extends State<SignupScreen> {
                     hintText: 'Contraseña',
                     fillColor: Colors.white,
                     filled: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 12.0, horizontal: 16.0),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
-                  style: TextStyle(color: Colors.black),
+                  style: const TextStyle(color: Colors.black),
                   obscureText: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -184,21 +193,21 @@ class _SignupScreenState extends State<SignupScreen> {
                   },
                 ),
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               _isLoading
-                  ? Center(child: CircularProgressIndicator())
+                  ? const Center(child: CircularProgressIndicator())
                   : SizedBox(
                       width: 150,
                       child: ElevatedButton(
                         onPressed: _signup,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
-                          padding: EdgeInsets.symmetric(vertical: 14.0),
+                          padding: const EdgeInsets.symmetric(vertical: 14.0),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
-                        child: Text(
+                        child: const Text(
                           'Crear cuenta',
                           style: TextStyle(color: Colors.white, fontSize: 16),
                         ),

@@ -9,9 +9,11 @@ class DoctorBase {
   final String last_name;
   final String email;
 
-  DoctorBase({required this.first_name, required this.last_name, required this.email});
+  DoctorBase(
+      {required this.first_name, required this.last_name, required this.email});
 
-  factory DoctorBase.fromJson(Map<String, dynamic> json) => _$DoctorBaseFromJson(json);
+  factory DoctorBase.fromJson(Map<String, dynamic> json) =>
+      _$DoctorBaseFromJson(json);
   Map<String, dynamic> toJson() => _$DoctorBaseToJson(this);
 }
 
@@ -19,10 +21,15 @@ class DoctorBase {
 class DoctorCreate extends DoctorBase {
   final String password;
 
-  DoctorCreate({required String first_name, required String last_name, required String email, required this.password})
-      : super(first_name: first_name, last_name: last_name, email: email);
+  DoctorCreate(
+      {required super.first_name,
+      required super.last_name,
+      required super.email,
+      required this.password});
 
-  factory DoctorCreate.fromJson(Map<String, dynamic> json) => _$DoctorCreateFromJson(json);
+  factory DoctorCreate.fromJson(Map<String, dynamic> json) =>
+      _$DoctorCreateFromJson(json);
+  @override
   Map<String, dynamic> toJson() => _$DoctorCreateToJson(this);
 }
 
@@ -30,9 +37,13 @@ class DoctorCreate extends DoctorBase {
 class Doctor extends DoctorBase {
   final int id;
 
-  Doctor({required String first_name, required String last_name, required String email, required this.id})
-      : super(first_name: first_name, last_name: last_name, email: email);
+  Doctor(
+      {required super.first_name,
+      required super.last_name,
+      required super.email,
+      required this.id});
 
   factory Doctor.fromJson(Map<String, dynamic> json) => _$DoctorFromJson(json);
+  @override
   Map<String, dynamic> toJson() => _$DoctorToJson(this);
 }
