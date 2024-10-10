@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/doctor_model.dart';
 import '../models/patient_model.dart';
+import 'dart:typed_data';
 
 class ApiService {
   final String baseUrl = 'http://127.0.0.1:8000/api';
@@ -51,7 +52,6 @@ class ApiService {
     var request =
         http.MultipartRequest('POST', Uri.parse('$baseUrl/patients/'));
 
-    // Adding form fields
     request.fields['first_name'] = firstName;
     request.fields['last_name'] = lastName;
     request.fields['sex'] = sex;
@@ -59,10 +59,8 @@ class ApiService {
     request.fields['doctor_id'] = doctorId.toString();
     request.fields['diagnosis'] = diagnosis;
 
-    // Adding the file
     request.files.add(await http.MultipartFile.fromPath('file', filePath));
 
-    // Sending the request
     var streamedResponse = await request.send();
     var response = await http.Response.fromStream(streamedResponse);
 
@@ -101,6 +99,17 @@ class ApiService {
       return Doctor.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Error al obtener el doctor');
+    }
+  }
+
+  Future<Uint8List?> getPatientPhoto(int patientId) async {
+    final response =
+        await http.get(Uri.parse('$baseUrl/patients/$patientId/photo'));
+
+    if (response.statusCode == 200) {
+      return response.bodyBytes;
+    } else {
+      throw Exception('Error al obtener la foto del paciente');
     }
   }
 }
