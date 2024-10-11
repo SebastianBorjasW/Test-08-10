@@ -40,35 +40,30 @@ class ApiService {
     }
   }
 
-  Future<Patient?> registerPatient(
+  Future<http.Response?> registerPatient(
     String firstName,
     String lastName,
     String sex,
     DateTime dob,
     int doctorId,
-    String diagnosis,
     String filePath,
   ) async {
     var request =
         http.MultipartRequest('POST', Uri.parse('$baseUrl/patients/'));
 
+    // Configura los campos del formulario
     request.fields['first_name'] = firstName;
     request.fields['last_name'] = lastName;
     request.fields['sex'] = sex;
     request.fields['dob'] = dob.toIso8601String();
     request.fields['doctor_id'] = doctorId.toString();
-    request.fields['diagnosis'] = diagnosis;
 
+    // Añade el archivo (imagen) al formulario
     request.files.add(await http.MultipartFile.fromPath('file', filePath));
 
+    // Envía la solicitud al servidor
     var streamedResponse = await request.send();
-    var response = await http.Response.fromStream(streamedResponse);
-
-    if (response.statusCode == 200) {
-      return Patient.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Error al registrar el paciente');
-    }
+    return await http.Response.fromStream(streamedResponse);
   }
 
   Future<List<Patient>> getPatients({int skip = 0, int limit = 100}) async {
@@ -90,6 +85,21 @@ class ApiService {
   Future<Doctor?> getDoctor(int doctorId) async {
     final response = await http.get(
       Uri.parse('$baseUrl/doctors/$doctorId'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return Doctor.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Error al obtener el doctor');
+    }
+  }
+
+  Future<Doctor?> getDoctorByEmail(String doctorEmail) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/doctors/email/$doctorEmail'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
