@@ -16,7 +16,6 @@ def register_patient(
     sex: str = Form(...),
     dob: date = Form(...),
     doctor_id: int = Form(...),
-    diagnosis: str = Form(...),
     file: UploadFile = File(...),
     db: Session = Depends(Config.get_db)
 ):
@@ -27,7 +26,7 @@ def register_patient(
         dob=dob,
         xray_image_path='',
         doctor_id=doctor_id,
-        diagnosis=diagnosis
+        diagnosis=''
     )
     
     return patient_crud.register_patient(db, patient_create, file)
