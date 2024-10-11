@@ -122,3 +122,21 @@ flutter build linux
 ```
 The compiled files will be located in the `build/<platform>` folder.
 
+
+# Use
+## Create an account using the 'Crear cuenta' button. 
+![Login](docs/images/login.png)
+
+## Fill in the fields.  
+![Signup](docs/images/signup.png)
+
+## Dashboard
+![Dashboard](docs/images/dashboard.png)
+
+### a) Filter patients by their diagnosis
+![Filter](docs/images/filter.png)
+### b) Click on a patient to view details or download a PDF with the information
+![Patient](docs/images/patient.png)
+
+## Register a new patient
+![NewPatient](docs/images/new_patient.png)
