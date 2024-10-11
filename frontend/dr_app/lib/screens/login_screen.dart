@@ -1,8 +1,10 @@
 // author: Renato García Morán
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../services/api_service.dart';
 import '../screens/dashboard_screen.dart';
 import '../screens/signup_screen.dart';
+import '../models/app_state.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -28,6 +30,11 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
           _loginFailed = false;
         });
+
+        // Guardar el correo electrónico en el estado global
+        Provider.of<AppState>(context, listen: false)
+            .setEmail(_emailController.text);
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const DashboardScreen()),
@@ -67,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 8),
               const Text(
-                'Renato Garcia Moran',
+                'Renato García Morán',
                 style: TextStyle(
                   color: Colors.white70,
                   fontSize: 16,
@@ -142,7 +149,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SignupScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => const SignupScreen()),
                     );
                   },
                   child: const Text(
