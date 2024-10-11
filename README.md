@@ -12,6 +12,11 @@ This project utilizes several technologies to build a robust application, includ
 - **SQLAlchemy**: A SQL toolkit and Object-Relational Mapping (ORM) system for Python, used to interact with the MySQL database.
 - **Flutter**: An open-source UI software development toolkit for building natively compiled applications for mobile, web, and desktop from a single codebase.  
 
+# Resources
+- Google Colab notebook: [Open in Colab](https://colab.research.google.com/drive/1b1znwsnHKBp-T1GSe54Rxl1l176xhSV3?usp=sharing)  
+- Pre-trained model used: [MobileNetV2](https://www.kaggle.com/models/google/mobilenet-v2)  
+- Dataset used: [COVID-19 Image Dataset](https://www.kaggle.com/datasets/pranavraikokte/covid19-image-dataset)
+
 # Setup Project
 ## Requirements
 * Python3.10  
