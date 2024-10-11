@@ -74,3 +74,51 @@ cd backend
 ```
 fastapi run app.py
 ```
+
+# Run the app
+## Requirements
+- **Flutter SDK**: You can download it from [flutter.dev](https://flutter.dev/docs/get-started/install).
+### Compile the desktop app
+1. **Clone the repository** (if not already done)
+``` bash
+git clone https://github.com/SebastianBorjasW/Test-08-10.git
+```
+
+2. **Change to the Flutter project directory**
+``` bash
+cd Test-08-10/frontend/dr_app
+```
+
+3. **Install Flutter dependencies**:
+``` bash
+flutter pub get
+```
+
+4. **Verify the development environment setup**:
+``` bash
+flutter doctor
+```
+Make sure all items are marked as correct.
+
+5. **Enable desktop support** (if not already enabled):
+``` bash
+flutter config --enable-windows-desktop
+flutter config --enable-macos-desktop
+flutter config --enable-linux-desktop
+```
+
+6. **Compile the application for desktop**:
+- For Windows:
+``` bash
+flutter build windows
+```
+- For macOS:
+``` bash
+flutter build macos
+```
+- For Linux:
+``` bash
+flutter build linux
+```
+The compiled files will be located in the `build/<platform>` folder.
+
