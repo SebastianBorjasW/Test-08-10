@@ -62,13 +62,13 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('La descarga fue cancelada')),
+            const SnackBar(content: Text('La descarga fue cancelada')),
           );
         }
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error al descargar el PDF')),
+        const SnackBar(content: Text('Error al descargar el PDF')),
       );
     }
   }
